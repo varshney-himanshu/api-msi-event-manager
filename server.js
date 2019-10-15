@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+const app = express();
 const keys = require("./config/keys"); //importing keys for database connection
 
 //--------------establishing connection with database---------------
@@ -17,7 +18,11 @@ mongoose.connect(
   }
 );
 
-const app = express();
+//---------------adding routes to server-------------------
+const route_user = require("./routes/User");
+
+app.use("/user", route_user);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
