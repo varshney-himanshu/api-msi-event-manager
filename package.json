@@ -4,7 +4,8 @@
   "description": "Backend Api for event-management",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/varshney-himanshu/api-event-manager/issues"
   },
-  "homepage": "https://github.com/varshney-himanshu/api-event-manager#readme"
+  "homepage": "https://github.com/varshney-himanshu/api-event-manager#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.5",
+    "passport": "^0.4.0"
+  }
 }
