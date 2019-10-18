@@ -173,27 +173,3 @@ router.get(
     });
   }
 );
-
-// @route   GET user/tasks
-// @desc    get all user
-// @access  private (ADMIN ONLY)
-
-router.get(
-  "/:id/tasks",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    if (req.user.role !== "ADMIN" && req.user.role !== "EMPLOYEE") {
-      const errors = { auth: false };
-      return res.status(403).json(errors);
-    }
-
-    const id = req.params.id.toString();
-
-    Task.find(
-      { $or: [{ "assigned_to.id": id }, { "supervisor.id": id }] },
-      (err, tasks) => {
-        res.status(200).send(tasks);
-      }
-    );
-  }
-);
