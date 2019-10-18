@@ -7,7 +7,7 @@ const passport = require("passport");
 const secret = require("../config/keys").secretOrKey;
 
 const validateRegisterInput = require("../utils/validation/registration");
-
+const validateLoginInput = require("../utils/validation/login");
 router.post("/register", (req, res) => {
   const { isValid, errors } = validateRegisterInput(req.body);
   if (!isValid) {
