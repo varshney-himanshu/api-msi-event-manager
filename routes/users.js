@@ -153,6 +153,21 @@ router.get(
   }
 );
 
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.user.id;
+    User.findOneAndDelete({ id })
+      .then(user => {
+        res.status(200).json(user);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  }
+);
+
 // @route   POST user/
 // @desc    get all user
 // @access  private (ADMIN ONLY)

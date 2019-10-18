@@ -1,12 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const passport = require("passport");
 const app = express();
 const keys = require("./config/keys"); //importing keys for database connection
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//---------------adding routes to server-------------------
+const route_user = require("./routes/users");
+
+app.use("/user", route_user);
+
 //--------------establishing connection with database---------------
 mongoose.connect(
   keys.mongoURI,
@@ -20,10 +26,9 @@ mongoose.connect(
   }
 );
 
-//---------------adding routes to server-------------------
-const route_user = require("./routes/users");
-
-app.use("/user", route_user);
+//initializing passport
+app.use(passport.initialize());
+require("./config/passport")(passport);
 
 app.get("/", (req, res) => {
   res.send("<h1>back-end api msi-event-management</h1>");
