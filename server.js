@@ -10,8 +10,10 @@ app.use(bodyParser.json());
 
 //---------------adding routes to server-------------------
 const route_user = require("./routes/users");
+const route_profile = require("./routes/profiles");
 
 app.use("/user", route_user);
+app.use("/profile", route_profile);
 
 //--------------establishing connection with database---------------
 mongoose.connect(
