@@ -14,7 +14,7 @@ const ProfileSchema = new schema(
     },
     phone: {
       type: String,
-      required: true
+      default: ""
     },
     course: {
       type: String,
