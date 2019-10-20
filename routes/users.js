@@ -3,6 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const Profile = require("../models/Profile");
 
 const secret = require("../config/keys").secretOrKey;
 
@@ -157,10 +158,14 @@ router.delete(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { id } = req.user.id;
+    const { id } = req.user;
     User.findOneAndDelete({ id })
       .then(user => {
-        res.status(200).json(user);
+        Profile.findOneAndDelete({ user: user.id }).then(profile => {
+          if (profile) {
+            res.status(200).json({ user, profile });
+          }
+        });
       })
       .catch(err => {
         res.status(400).json(err);

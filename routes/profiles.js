@@ -45,6 +45,10 @@ router.post(
   }
 );
 
+// @route   PUT profile/
+// @desc    update profile
+// @access  private
+
 router.put(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -70,6 +74,10 @@ router.put(
   }
 );
 
+// @route   GET /profile/
+// @desc    get profile
+// @access  private
+
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -83,6 +91,50 @@ router.get(
         }
       })
       .catch(err => res.status(400).json(err));
+  }
+);
+
+router.put(
+  "/add-phone",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { phone } = req.body;
+
+    Profile.findOneAndUpdate(
+      { user: req.user.id },
+      { phone },
+      { new: true, useFindAndModify: false }
+    )
+      .then(profile => {
+        if (profile) {
+          res.status(200).json(profile);
+        }
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  }
+);
+
+router.put(
+  "/add-registered-event",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { eventId } = req.body;
+    const { id } = req.user;
+    Profile.findOneAndUpdate(
+      { user: id },
+      { $push: { registered: eventId } },
+      { new: true }
+    )
+      .then(profile => {
+        if (profile) {
+          res.status(200).json(profile);
+        }
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
   }
 );
 

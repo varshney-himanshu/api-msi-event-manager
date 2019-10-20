@@ -18,7 +18,7 @@ app.use("/profile", route_profile);
 //--------------establishing connection with database---------------
 mongoose.connect(
   keys.mongoURI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
   err => {
     if (err) {
       console.log(err);
