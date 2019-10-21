@@ -19,31 +19,6 @@
       },
       "src": "/.*",
       "dest": "/server.js"
-    },
-    {
-      "src": "/",
-      "dest": "server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/user",
-      "dest": "server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/user/all",
-      "dest": "server.js",
-      "methods": ["GET"]
-    },
-    {
-      "src": "/user/register",
-      "dest": "server.js",
-      "methods": ["POST"]
-    },
-    {
-      "src": "/user/login",
-      "dest": "server.js",
-      "methods": ["POST"]
     }
   ]
 }
