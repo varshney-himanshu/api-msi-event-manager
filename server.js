@@ -11,9 +11,11 @@ app.use(bodyParser.json());
 //---------------adding routes to server-------------------
 const route_user = require("./routes/users");
 const route_profile = require("./routes/profiles");
+const route_event = require("./routes/events");
 
 app.use("/user", route_user);
 app.use("/profile", route_profile);
+app.use("/event", route_event);
 
 //--------------establishing connection with database---------------
 mongoose.connect(
