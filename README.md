@@ -1,5 +1,5 @@
-# api-event-manager
-Backend api for msi event management web app
+# API-event-manager
+Backend API's for msi event management web app
 
 # To start the server on your local machine: 
 1. Install Node.js. link: https://nodejs.org/en/download/
