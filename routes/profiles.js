@@ -94,17 +94,17 @@ router.get(
   }
 );
 
+// @route   PUT /profile/add-phone
+// @desc    update phone in profile
+// @access  private
+
 router.put(
   "/add-phone",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const { phone } = req.body;
 
-    Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { phone },
-      { new: true, useFindAndModify: false }
-    )
+    Profile.findOneAndUpdate({ user: req.user.id }, { phone }, { new: true })
       .then(profile => {
         if (profile) {
           res.status(200).json(profile);
@@ -115,6 +115,10 @@ router.put(
       });
   }
 );
+
+// @route   PUT /profile/add-registered-event
+// @desc    add events that user registers
+// @access  private
 
 router.put(
   "/add-registered-event",
@@ -135,6 +139,68 @@ router.put(
       .catch(err => {
         res.status(400).json(err);
       });
+  }
+);
+
+// @route   PUT /profile/social
+// @desc    update social media links in profile
+// @access  private
+
+router.put(
+  "/social",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.user;
+    const { social } = req.body;
+    Profile.findOneAndUpdate({ user: id }, { social }, { new: true })
+      .then(profile => {
+        if (profile) {
+          res.status(200).json(profile);
+        }
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
+
+// @route   GET /profile/all
+// @desc    get all profiles
+// @access  private (ADMIN only)
+
+router.get(
+  "/all",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.user.role !== "ADMIN") {
+      return res.status(401).json({ msg: "unauthorized!" });
+    }
+
+    Profile.find()
+      .then(profiles => {
+        res.status(200).json(profiles);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  }
+);
+
+// @route   DELETE /profile
+// @desc    delete user profile
+// @access  private
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.user;
+
+    Profile.findOneAndDelete({ user: id })
+      .then(profile => {
+        if (profile) {
+          res.status(200).json(profile);
+        }
+      })
+      .catch(err => res.status(400).json(err));
   }
 );
 
