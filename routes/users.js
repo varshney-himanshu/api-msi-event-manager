@@ -131,7 +131,7 @@ router.get(
   }
 );
 
-// @route   POST user/
+// @route   GET user/all
 // @desc    get all user
 // @access  private (ADMIN ONLY)
 

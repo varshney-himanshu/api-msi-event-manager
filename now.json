@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@now/node-server"
+    }
+  ],
+  "env": {
+    "MONGO_URI": "mongodb://abc:1234@cluster0-shard-00-00-uxmt0.mongodb.net:27017,cluster0-shard-00-01-uxmt0.mongodb.net:27017,cluster0-shard-00-02-uxmt0.mongodb.net:27017/msi-test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority",
+    "SECRET_OR_KEY": "adsfasdfasdfasdf"
+  },
+  "routes": [
+    {
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
+      },
+      "src": "/.*",
+      "dest": "/server.js"
+    },
+    {
+      "src": "/",
+      "dest": "server.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/user",
+      "dest": "server.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/user/all",
+      "dest": "server.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/user/register",
+      "dest": "server.js",
+      "methods": ["POST"]
+    },
+    {
+      "src": "/user/login",
+      "dest": "server.js",
+      "methods": ["POST"]
+    }
+  ]
+}
