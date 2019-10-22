@@ -2,11 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
+const cors = require("cors");
 const app = express();
 const keys = require("./config/keys"); //importing keys for database connection
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 //---------------adding routes to server-------------------
 const route_user = require("./routes/users");
