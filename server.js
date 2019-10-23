@@ -45,7 +45,7 @@ app.use("/event", route_event);
 //--------------establishing connection with database---------------
 mongoose.connect(
   keys.mongoURI,
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+  { useNewUrlParser: true, useFindAndModify: false },
   err => {
     if (err) {
       console.log(err);
