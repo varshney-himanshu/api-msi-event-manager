@@ -123,12 +123,14 @@ router.post(
   (req, res) => {
     const { id } = req.params;
     const { user } = req.body;
+    console.log(id, user);
     Event.findOneAndUpdate(
-      { creator: req.user.id, _id: id },
+      { _id: id },
       { $push: { usersRegistered: user } },
       { new: true }
     )
       .then(event => {
+        console.log(event);
         if (event) {
           res.status(200).json(event);
         }
