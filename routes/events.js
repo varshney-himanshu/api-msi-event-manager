@@ -117,8 +117,8 @@ router.put(
   }
 );
 
-router.put(
-  "/:id/add-user",
+router.post(
+  "/:id/register-user",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const { id } = req.params;
