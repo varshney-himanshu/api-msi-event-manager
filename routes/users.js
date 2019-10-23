@@ -76,7 +76,8 @@ router.post("/login", (req, res) => {
             id: user.id,
             email: user.email,
             name: user.name,
-            role: user.role
+            role: user.role,
+            isProfileCreated: user.isProfileCreated
           };
 
           jwt.sign(payload, secret, { expiresIn: 14400 }, (err, token) => {
