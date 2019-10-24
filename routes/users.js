@@ -119,16 +119,15 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { _id, name, email, role, phone } = req.user;
-    const user = {
-      _id,
-      name,
-      email,
-      role,
-      phone
-    };
+    const { _id } = req.user;
 
-    res.status(200).json(user);
+    User.findOne({ _id })
+      .then(user => {
+        if (user) {
+          res.status(200).json(user);
+        }
+      })
+      .catch(err => res.status(400).json(err));
   }
 );
 
