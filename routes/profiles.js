@@ -18,7 +18,7 @@ router.post(
       return res.status(400).json(errors);
     }
 
-    const { user, enrollment_id, course, institute } = req.body;
+    const { user, enrollment_id, course, institute, phone } = req.body;
     Profile.findOne({ user }).then(profile => {
       if (profile) {
         res.status(409).json({ error: "profile already exist" });
@@ -27,7 +27,8 @@ router.post(
           user,
           enrollment_id,
           course,
-          institute
+          institute,
+          phone
         });
 
         newProfile.save().then(profile => {
@@ -49,7 +50,7 @@ router.post(
 // @desc    update profile
 // @access  private
 
-router.put(
+router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
@@ -58,11 +59,11 @@ router.put(
       return res.status(400).json(errors);
     }
 
-    const { user, enrollment_id, course, institute } = req.body;
+    const { user, enrollment_id, phone, course, institute } = req.body;
 
     Profile.findOneAndUpdate(
       { user: req.user.id },
-      { user, enrollment_id, course, institute },
+      { user, enrollment_id, phone, course, institute },
       { new: true }
     )
       .then(profile => {
