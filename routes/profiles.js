@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
 const Profile = require("../models/Profile");
 const passport = require("passport");
 const User = require("../models/User");
@@ -181,6 +182,39 @@ router.get(
       })
       .catch(err => {
         res.status(400).json(err);
+      });
+  }
+);
+
+// @route   GET /profile/ids
+// @desc    get all profile with array of ids
+// @access  private
+
+router.get(
+  "/ids",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.user;
+    const { registered } = req.body;
+
+    // console.log(registered);
+
+    const ObjectId = mongoose.Types.ObjectId;
+
+    const objIds = registered.map(id => (id = new ObjectId(id)));
+    console.log(objIds);
+    Profile.find({
+      _id: {
+        $in: objIds
+      }
+    })
+      .then(profiles => {
+        if (profiles) {
+          res.status(200).send(profiles);
+        }
+      })
+      .catch(err => {
+        res.status(400);
       });
   }
 );
