@@ -8,6 +8,10 @@ const eventSchema = new schema(
       ref: "users",
       required: true
     },
+    image: {
+      data: Buffer,
+      contentType: String
+    },
     title: {
       type: String,
       required: true

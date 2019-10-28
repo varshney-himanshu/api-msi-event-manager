@@ -24,6 +24,11 @@ const userSchema = new schema(
       required: true
     },
 
+    access: [
+      {
+        type: String
+      }
+    ],
     phone: {
       type: String
     },
