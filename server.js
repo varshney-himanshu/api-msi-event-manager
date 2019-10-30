@@ -11,7 +11,7 @@ const path = require("path");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 //---------------adding routes to server-------------------
 const route_user = require("./routes/users");
