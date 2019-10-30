@@ -4,15 +4,9 @@ const passport = require("passport");
 const fs = require("fs");
 const path = require("path");
 
-//---------------setting up multer--------------
-
 const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: function(req, res, cb) {
-    cb(null, "public/uploads");
-  }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
@@ -36,8 +30,10 @@ router.post(
     }
 
     var image = {};
-    image.data = fs.readFileSync(req.file.path);
+
+    image.data = req.file.buffer;
     image.contentType = "image/jpeg";
+    console.log(image);
 
     const { creator, venue, description, title, deadline } = req.body;
 
