@@ -8,6 +8,15 @@ const ProfileSchema = new schema(
       ref: "users",
       required: true
     },
+    fullName: {
+      type: String,
+      required: true
+    },
+    email: {
+      type: String,
+      require: true,
+      lowercase: true
+    },
     enrollment_id: {
       type: String,
       required: true
@@ -23,11 +32,6 @@ const ProfileSchema = new schema(
     institute: {
       type: String,
       required: true
-    },
-    social: {
-      facebook: { type: String },
-      twitter: { type: String },
-      github: { type: String }
     },
     registered: [{ type: schema.Types.ObjectId }]
   },
