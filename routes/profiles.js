@@ -115,6 +115,22 @@ router.get(
   }
 );
 
+router.get(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { id } = req.params;
+
+    Profile.findOne({ user: id })
+      .then(profile => {
+        if (profile) {
+          res.status(200).json(profile);
+        }
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
+
 // @route   PUT /profile/add-phone
 // @desc    update phone in profile
 // @access  private
@@ -222,13 +238,15 @@ router.post(
 
     const objIds = registered.map(id => (id = new ObjectId(id)));
     console.log(objIds);
+
     Profile.find({
-      _id: {
+      user: {
         $in: objIds
       }
     })
       .then(profiles => {
         if (profiles) {
+          console.log(profiles);
           res.status(200).send(profiles);
         }
       })
