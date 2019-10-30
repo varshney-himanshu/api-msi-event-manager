@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Profile = require("../models/Profile");
 const passport = require("passport");
 const User = require("../models/User");
+const { Parser } = require("json2csv");
 
 const validateProfileRegisterInput = require("../utils/validation/profile-registration");
 
@@ -231,13 +232,9 @@ router.post(
   (req, res) => {
     const { id } = req.user;
     const { registered } = req.body;
-
-    // console.log(registered);
-
     const ObjectId = mongoose.Types.ObjectId;
 
     const objIds = registered.map(id => (id = new ObjectId(id)));
-    console.log(objIds);
 
     Profile.find({
       user: {
@@ -246,8 +243,62 @@ router.post(
     })
       .then(profiles => {
         if (profiles) {
-          console.log(profiles);
           res.status(200).send(profiles);
+        }
+      })
+      .catch(err => {
+        res.status(400);
+      });
+  }
+);
+
+router.post(
+  "/ids/download",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { registered } = req.body;
+    const ObjectId = mongoose.Types.ObjectId;
+    const objIds = registered.map(id => (id = new ObjectId(id)));
+
+    //   console.log(objIds);
+    Profile.find({
+      user: {
+        $in: objIds
+      }
+    })
+      .then(profiles => {
+        if (profiles) {
+          // console.log(profiles);
+          const fields = [
+            "fullName",
+            "email",
+            "phone",
+            "enrollment_id",
+            "institute",
+            "course"
+          ];
+
+          const fieldNames = [
+            "Name",
+            "Email",
+            "Phone",
+            "Enrollment No.",
+            "Institute",
+            "Course"
+          ];
+
+          const opts = {
+            fields,
+            excelStrings: false
+          };
+
+          const parser = new Parser(opts);
+          const csv = parser.parse(profiles);
+          console.log(csv);
+
+          res.attachment("registered.csv");
+
+          res.status(200).send(csv);
         }
       })
       .catch(err => {
