@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Event = require("../models/Event");
 const passport = require("passport");
 const fs = require("fs");
+const path = require("path");
 
 //---------------setting up multer--------------
 
@@ -9,7 +10,7 @@ const multer = require("multer");
 
 const storage = multer.diskStorage({
   destination: function(req, res, cb) {
-    cb(null, "/tmp");
+    cb(null, "./tmp");
   }
 });
 
