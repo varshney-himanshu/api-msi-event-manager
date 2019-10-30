@@ -25,19 +25,18 @@ router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), upload.single("imgFile")],
   (req, res) => {
-    console.log();
     if (req.user.role !== "ADMIN") {
       return res.status(401).json({ msg: "unauthorized" });
     }
-
-    var image = {};
-    image.data = fs.readFileSync(req.file.path);
-    image.contentType = "image/jpeg";
 
     const { isValid, errors } = validateEventRegisterInput(req.body);
     if (!isValid) {
       return res.status(400).json(errors);
     }
+
+    var image = {};
+    image.data = fs.readFileSync(req.file.path);
+    image.contentType = "image/jpeg";
 
     const { creator, venue, description, title, deadline } = req.body;
 
