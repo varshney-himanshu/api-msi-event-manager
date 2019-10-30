@@ -2,7 +2,6 @@ const router = require("express").Router();
 const Event = require("../models/Event");
 const passport = require("passport");
 const fs = require("fs");
-const path = require("path");
 
 //---------------setting up multer--------------
 
@@ -11,18 +10,6 @@ const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function(req, res, cb) {
     cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    /*
-      uuidv4() will generate a random ID that we'll use for the
-      new filename. We use path.extname() to get
-      the extension from the original file name and add that to the new
-      generated ID. These combined will create the file name used
-      to save the file on the server and will be available as
-      req.file.pathname in the router handler.
-    */
-    const newFilename = `${"file"}${path.extname(file.originalname)}`;
-    cb(null, newFilename);
   }
 });
 
@@ -34,18 +21,11 @@ const validateEventRegisterInput = require("../utils/validation/event-registrati
 // @desc    add new event
 // @access  private
 
-router.post("/test", upload.single("imgFile"), (req, res) => {
-  const img = {};
-  img.data = fs.readFileSync(req.file.path);
-  img.contentType = "image/jpeg";
-
-  console.log(img);
-});
-
 router.post(
   "/register",
-  [passport.authenticate("jwt", { session: false }), upload.single("file")],
+  [passport.authenticate("jwt", { session: false }), upload.single("imgFile")],
   (req, res) => {
+    console.log();
     if (req.user.role !== "ADMIN") {
       return res.status(401).json({ msg: "unauthorized" });
     }
