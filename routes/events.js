@@ -1,13 +1,9 @@
 const router = require("express").Router();
 const Event = require("../models/Event");
 const passport = require("passport");
-const fs = require("fs");
-const path = require("path");
 
 const multer = require("multer");
-
 const storage = multer.memoryStorage();
-
 const upload = multer({ storage: storage });
 
 const validateEventRegisterInput = require("../utils/validation/event-registration");
