@@ -18,11 +18,13 @@ const route_user = require("./routes/users");
 const route_profile = require("./routes/profiles");
 const route_event = require("./routes/events");
 const route_image = require("./routes/images");
+const route_notice = require("./routes/notices");
 
 app.use("/user", route_user);
 app.use("/profile", route_profile);
 app.use("/event", route_event);
 app.use("/image", route_image);
+app.use("/notice", route_notice);
 
 //--------------establishing connection with database---------------
 mongoose.connect(
