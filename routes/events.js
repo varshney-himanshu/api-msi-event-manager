@@ -72,6 +72,7 @@ router.get(
     const { id } = req.user;
 
     Event.find({ creator: id })
+      .sort({ createdAt: -1 })
       .then(events => {
         if (events) {
           res.status(200).json(events);
