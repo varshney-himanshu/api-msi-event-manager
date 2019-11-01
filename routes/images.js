@@ -29,7 +29,7 @@ router.post("/home/add", upload.single("image"), (req, res) => {
 });
 
 router.get("/home", (req, res) => {
-  HomeImage.find()
+  HomeImage.find().sort({createdAt: -1})
     .then(images => {
       if (images) {
         res.status(200).json(images);
