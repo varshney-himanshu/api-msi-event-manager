@@ -4,16 +4,12 @@ const schema = mongoose.Schema;
 const HomeImageSchema = new schema(
   {
     event: {
-      type: String,
-      default: ""
+      id: { type: schema.Types.ObjectId },
+      msg: { type: String }
     },
-    image: {
-      data: Buffer,
-      contentType: String
-    },
-    msg: {
-      type: String,
-      default: ""
+    data: {
+      url: { type: String, require: true },
+      id: { type: String, require: true }
     }
   },
   { timestamps: true }

@@ -3,7 +3,24 @@ const Event = require("../models/Event");
 const passport = require("passport");
 
 const multer = require("multer");
-const storage = multer.memoryStorage();
+const {
+  cloud_api_key,
+  cloud_name,
+  cloud_api_secret
+} = require("../config/keys");
+const cloudinary = require("cloudinary");
+const cloudinaryStorage = require("multer-storage-cloudinary");
+
+cloudinary.config({
+  cloud_name: cloud_name,
+  api_key: cloud_api_key,
+  api_secret: cloud_api_secret
+});
+
+const storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: "msi-events/events"
+});
 const upload = multer({ storage: storage });
 
 const validateEventRegisterInput = require("../utils/validation/event-registration");
@@ -27,8 +44,8 @@ router.post(
 
     var image = {};
 
-    image.data = req.file.buffer;
-    image.contentType = "image/jpeg";
+    image.url = req.file.url;
+    image.public_id = req.file.public_id;
     console.log(image);
 
     const { creator, venue, description, title, deadline } = req.body;

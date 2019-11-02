@@ -9,8 +9,8 @@ const eventSchema = new schema(
       required: true
     },
     image: {
-      data: Buffer,
-      contentType: String
+      url: { type: String },
+      public_id: { type: String }
     },
     title: {
       type: String,

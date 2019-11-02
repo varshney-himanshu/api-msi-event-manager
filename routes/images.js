@@ -2,19 +2,37 @@ const router = require("express").Router();
 const HomeImage = require("../models/HomeImage");
 const multer = require("multer");
 const passport = require("passport");
-const storage = multer.memoryStorage();
+const {
+  cloud_api_key,
+  cloud_name,
+  cloud_api_secret
+} = require("../config/keys");
+const cloudinary = require("cloudinary");
+const cloudinaryStorage = require("multer-storage-cloudinary");
+
+cloudinary.config({
+  cloud_name: cloud_name,
+  api_key: cloud_api_key,
+  api_secret: cloud_api_secret
+});
+
+const storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: "msi-events/home"
+});
 const upload = multer({ storage: storage });
 
 router.post("/home/add", upload.single("image"), (req, res) => {
-  var image = {};
+  var data = {};
 
-  image.data = req.file.buffer;
-  image.contentType = "image/jpeg";
+  data.url = req.file.url;
+  data.id = req.file.public_id;
 
+  console.log(data);
   const event = req.body.event || "";
 
   const newImage = new HomeImage({
-    image,
+    data,
     event
   });
 
@@ -29,7 +47,8 @@ router.post("/home/add", upload.single("image"), (req, res) => {
 });
 
 router.get("/home", (req, res) => {
-  HomeImage.find().sort({createdAt: -1})
+  HomeImage.find()
+    .sort({ createdAt: -1 })
     .then(images => {
       if (images) {
         res.status(200).json(images);
@@ -47,7 +66,8 @@ router.delete(
     HomeImage.findOneAndDelete({ _id: id })
       .then(image => {
         if (image) {
-          res.status(200).json({ success: true });
+          const result = cloudinary.v2.uploader.destroy(image.data.id);
+          res.status(200).json({ success: result });
         }
       })
       .catch(err => {
