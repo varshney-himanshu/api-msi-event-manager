@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 const HomeImageSchema = new schema(
   {
     event: {
-      id: { type: schema.Types.ObjectId },
+      id: { type: String },
       msg: { type: String }
     },
     data: {
