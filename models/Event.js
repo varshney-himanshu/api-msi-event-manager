@@ -20,6 +20,10 @@ const eventSchema = new schema(
       type: String,
       required: true
     },
+    date: {
+      type: Date,
+      required: true
+    },
     deadline: {
       type: Date,
       required: true

@@ -48,7 +48,7 @@ router.post(
     image.public_id = req.file.public_id;
     console.log(image);
 
-    const { creator, venue, description, title, deadline } = req.body;
+    const { creator, venue, description, title, deadline, date } = req.body;
 
     const newEvent = new Event({
       creator,
@@ -56,7 +56,8 @@ router.post(
       description,
       title,
       image,
-      deadline
+      deadline,
+      date
     });
 
     newEvent
@@ -127,13 +128,14 @@ router.put(
       return res.status(200).json(errors);
     }
 
-    const { venue, description, title, deadline, image_prev } = req.body;
+    const { venue, description, title, deadline, date, image_prev } = req.body;
 
     let updatedata = {};
     updatedata.venue = venue;
     updatedata.description = description;
     updatedata.title = title;
     updatedata.deadline = deadline;
+    updatedata.date = date;
 
     if (req.file) {
       var image = {};
