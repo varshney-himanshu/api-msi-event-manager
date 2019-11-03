@@ -28,9 +28,7 @@ router.post("/home/add", upload.single("image"), (req, res) => {
   data.url = req.file.url;
   data.id = req.file.public_id;
 
-  console.log(data);
-  const event = req.body.event;
-
+  const event = JSON.parse(req.body.event);
   const newImage = new HomeImage({
     data,
     event
