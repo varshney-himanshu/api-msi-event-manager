@@ -119,7 +119,7 @@ router.get("/:id", (req, res) => {
 
 router.put(
   "/:id",
-  passport.authenticate("jwt", { session: false }),
+  [passport.authenticate("jwt", { session: false }), upload.single("imgFile")],
   (req, res) => {
     const { isValid, errors } = validateEventRegisterInput(req.body);
 
@@ -127,14 +127,29 @@ router.put(
       return res.status(200).json(errors);
     }
 
-    const { id } = req.params;
-    const { creator, venue, description, title, deadline } = req.body;
+    const { venue, description, title, deadline, image_prev } = req.body;
 
-    Event.findOneAndUpdate(
-      { _id: id, creator: req.user.id },
-      { creator, venue, description, title, deadline },
-      { new: true }
-    )
+    let updatedata = {};
+    updatedata.venue = venue;
+    updatedata.description = description;
+    updatedata.title = title;
+    updatedata.deadline = deadline;
+
+    if (req.file) {
+      var image = {};
+      image.url = req.file.url;
+      image.public_id = req.file.public_id;
+      updatedata.image = image;
+      const prevImage = JSON.parse(image_prev);
+
+      cloudinary.v2.uploader.destroy(prevImage.public_id);
+    }
+
+    const { id } = req.params;
+
+    Event.findOneAndUpdate({ _id: id, creator: req.user.id }, updatedata, {
+      new: true
+    })
       .then(event => {
         if (event) {
           res.status(200).json(event);
@@ -177,6 +192,7 @@ router.delete(
     Event.findOneAndDelete({ _id: id, creator: user })
       .then(event => {
         if (event) {
+          cloudinary.v2.uploader.destroy(event.image.public_id);
           res.status(200).json(event);
         }
       })
