@@ -14,9 +14,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/varshney-himanshu/api-event-manager/issues"
+    "url": "https://github.com/varshney-himanshu/api-msi-event-manager/issues"
   },
-  "homepage": "https://github.com/varshney-himanshu/api-event-manager#readme",
+  "homepage": "https://github.com/varshney-himanshu/api-msi-event-manager#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
