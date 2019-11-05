@@ -64,7 +64,7 @@ router.post(
 // @access  private
 
 router.post(
-  "/",
+  "/edit",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const { isValid, errors } = validateProfileRegisterInput(req.body);
