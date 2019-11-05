@@ -63,7 +63,7 @@ router.post(
 // @desc    update profile
 // @access  private
 
-router.put(
+router.post(
   "/edit",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
