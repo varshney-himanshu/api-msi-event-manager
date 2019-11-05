@@ -60,7 +60,7 @@ router.post(
 );
 
 // @route   POST profile/edit
-// @desc    update profile
+// @desc    Update profile
 // @access  private
 
 router.post(
@@ -222,7 +222,7 @@ router.get(
   }
 );
 
-// @route   GET /profile/ids
+// @route   POST /profile/ids
 // @desc    get all profile with array of ids
 // @access  private
 
