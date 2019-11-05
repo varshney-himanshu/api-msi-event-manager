@@ -59,7 +59,7 @@ router.post(
   }
 );
 
-// @route   PUT profile/
+// @route   POST profile/edit
 // @desc    update profile
 // @access  private
 

@@ -1,4 +1,6 @@
 {
+  "name": "api-msi-event-manager",
+  "alias": "api-msi-event-manager.now.sh",
   "version": 2,
   "builds": [{
     "src": "server.js",
