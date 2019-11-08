@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Event = require("../models/Event");
 const passport = require("passport");
-
+const mongoose = require("mongoose");
 const multer = require("multer");
 const {
   cloud_api_key,
