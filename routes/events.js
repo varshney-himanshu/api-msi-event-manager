@@ -33,7 +33,7 @@ router.post(
   "/register",
   [passport.authenticate("jwt", { session: false }), upload.single("imgFile")],
   (req, res) => {
-    if (req.user.role !== "ADMIN") {
+    if (req.user.role !== "ADMIN" && req.user.role !== "SUPER_ADMIN") {
       return res.status(401).json({ msg: "unauthorized" });
     }
 

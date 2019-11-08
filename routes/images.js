@@ -2,6 +2,7 @@ const router = require("express").Router();
 const HomeImage = require("../models/HomeImage");
 const multer = require("multer");
 const passport = require("passport");
+
 const {
   cloud_api_key,
   cloud_name,
@@ -22,27 +23,34 @@ const storage = cloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-router.post("/home/add", upload.single("image"), (req, res) => {
-  var data = {};
+router.post(
+  "/home/add",
+  [passport.authenticate("jwt", { session: false }), upload.single("image")],
+  (req, res) => {
+    if (req.user.role !== "SUPER_ADMIN") {
+      return res.status(401).json({ msg: "unauthorized" });
+    }
 
-  data.url = req.file.url;
-  data.id = req.file.public_id;
+    var data = {};
+    data.url = req.file.url;
+    data.id = req.file.public_id;
 
-  const event = JSON.parse(req.body.event);
-  const newImage = new HomeImage({
-    data,
-    event
-  });
+    const event = JSON.parse(req.body.event);
+    const newImage = new HomeImage({
+      data,
+      event
+    });
 
-  newImage
-    .save()
-    .then(image => {
-      if (image) {
-        res.status(200).json({ success: true });
-      }
-    })
-    .catch(err => res.status(400).json(err));
-});
+    newImage
+      .save()
+      .then(image => {
+        if (image) {
+          res.status(200).json({ success: true });
+        }
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
 
 router.get("/home", (req, res) => {
   HomeImage.find()
@@ -59,6 +67,10 @@ router.delete(
   "/home/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    if (req.user.role !== "SUPER_ADMIN") {
+      return res.status(401).json({ msg: "unauthorized" });
+    }
+
     const id = req.params.id;
 
     HomeImage.findOneAndDelete({ _id: id })
