@@ -202,4 +202,32 @@ router.delete(
   }
 );
 
+// @route   POST /event/ids
+// @desc    get all events with array of ids
+// @access  private
+
+router.post(
+  "/ids",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { registered } = req.body;
+    const ObjectId = mongoose.Types.ObjectId;
+    const objIds = registered.map(id => (id = new ObjectId(id)));
+
+    Event.find({
+      _id: {
+        $in: objIds
+      }
+    })
+      .then(events => {
+        if (events) {
+          res.status(200).send(events);
+        }
+      })
+      .catch(err => {
+        res.status(400);
+      });
+  }
+);
+
 module.exports = router;
