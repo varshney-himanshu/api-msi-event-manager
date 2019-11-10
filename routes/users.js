@@ -181,6 +181,31 @@ router.delete(
   }
 );
 
+// @route   PUT user/:id/update-role
+// @desc    update role of a user by id
+// @access  private (SUPER ADMIN ONLY)
+
+router.delete(
+  "/:id/update-role",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.user.role !== "SUPER_ADMIN") {
+      const errors = { auth: false };
+      return res.status(403).json(errors);
+    }
+    const { role } = req.body;
+    const { id } = req.params;
+    User.findOneAndUpdate({ id }, { role }, { new: true })
+      .then(user => {
+        if (user) {
+          res.status(200).json(user);
+        }
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  }
+);
 // @route   DELETE user/:id
 // @desc    Delete user by id
 // @access  private (SUPER ADMIN ONLY)
@@ -208,7 +233,6 @@ router.delete(
       });
   }
 );
-
 // @route   POST user/
 // @desc    get all user
 // @access  private (ADMIN ONLY)
