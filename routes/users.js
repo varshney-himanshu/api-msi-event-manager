@@ -185,7 +185,7 @@ router.delete(
 // @desc    update role of a user by id
 // @access  private (SUPER ADMIN ONLY)
 
-router.delete(
+router.put(
   "/:id/update-role",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
