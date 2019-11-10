@@ -195,7 +195,7 @@ router.put(
     }
     const { role } = req.body;
     const { id } = req.params;
-    User.findOneAndUpdate({ id }, { role }, { new: true })
+    User.findOneAndUpdate({ _id: id }, { role }, { new: true })
       .then(user => {
         if (user) {
           res.status(200).json(user);
@@ -206,6 +206,7 @@ router.put(
       });
   }
 );
+
 // @route   DELETE user/:id
 // @desc    Delete user by id
 // @access  private (SUPER ADMIN ONLY)
