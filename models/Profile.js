@@ -29,6 +29,14 @@ const ProfileSchema = new schema(
       type: String,
       required: true
     },
+    semester: {
+      type: String,
+      required: true
+    },
+    section: {
+      type: String,
+      required: true
+    },
     institute: {
       type: String,
       required: true

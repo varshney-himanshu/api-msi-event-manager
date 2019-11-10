@@ -97,6 +97,10 @@ router.post("/login", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// @route   POST user/verifiy-password
+// @desc    verify password
+// @access  private
+
 router.post(
   "/verify-password",
   passport.authenticate("jwt", { session: false }),
@@ -133,13 +137,13 @@ router.get(
 
 // @route   GET user/all
 // @desc    get all user
-// @access  private (ADMIN ONLY)
+// @access  private (SUPER ADMIN ONLY)
 
 router.get(
   "/all",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    if (req.user.role !== "ADMIN") {
+    if (req.user.role !== "SUPER_ADMIN") {
       const errors = { auth: false };
       return res.status(403).json(errors);
     }
@@ -154,11 +158,43 @@ router.get(
   }
 );
 
+// @route   DELETE user/
+// @desc    Delete user profile
+// @access  private
+
 router.delete(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const { id } = req.user;
+    User.findOneAndDelete({ id })
+      .then(user => {
+        Profile.findOneAndDelete({ user: user.id }).then(profile => {
+          if (profile) {
+            res.status(200).json({ user, profile });
+          }
+        });
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  }
+);
+
+// @route   DELETE user/:id
+// @desc    Delete user by id
+// @access  private (SUPER ADMIN ONLY)
+
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    if (req.user.role !== "SUPER_ADMIN") {
+      const errors = { auth: false };
+      return res.status(403).json(errors);
+    }
+
+    const { id } = req.params;
     User.findOneAndDelete({ id })
       .then(user => {
         Profile.findOneAndDelete({ user: user.id }).then(profile => {

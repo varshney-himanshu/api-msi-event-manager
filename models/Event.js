@@ -12,6 +12,10 @@ const eventSchema = new schema(
       url: { type: String },
       public_id: { type: String }
     },
+    type: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
