@@ -221,7 +221,7 @@ router.delete(
     }
 
     const { id } = req.params;
-    User.findOneAndDelete({ id })
+    User.findOneAndDelete({ _id: id })
       .then(user => {
         Profile.findOneAndDelete({ user: user.id }).then(profile => {
           if (profile) {
