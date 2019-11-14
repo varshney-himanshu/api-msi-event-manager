@@ -327,4 +327,25 @@ router.delete(
   }
 );
 
+// @route   POST profile/emails
+// @desc    get all users with array of emails
+// @access  private
+
+router.post(
+  "/emails",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { emails } = req.body;
+    Profile.find({
+      email: {
+        $in: emails
+      }
+    }).then(profiles => {
+      if (profiles) {
+        res.status(200).send(profiles);
+      }
+    });
+  }
+);
+
 module.exports = router;
