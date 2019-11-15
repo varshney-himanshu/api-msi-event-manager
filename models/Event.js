@@ -36,7 +36,12 @@ const eventSchema = new schema(
       type: String,
       required: true
     },
-    usersRegistered: [{ type: schema.Types.ObjectId }]
+    usersRegistered: {
+      type: Array
+    },
+    members: {
+      type: Number
+    }
   },
   { timestamps: true }
 );

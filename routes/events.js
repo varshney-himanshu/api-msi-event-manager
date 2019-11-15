@@ -48,17 +48,33 @@ router.post(
     image.public_id = req.file.public_id;
     console.log(image);
 
-    const { creator, venue, description, title, deadline, date } = req.body;
+    const {
+      creator,
+      venue,
+      description,
+      title,
+      deadline,
+      date,
+      type,
+      members
+    } = req.body;
 
-    const newEvent = new Event({
+    let event = {
       creator,
       venue,
       description,
       title,
       image,
       deadline,
-      date
-    });
+      date,
+      type
+    };
+
+    if (type === "MULTIPLE") {
+      event.members = members;
+    }
+
+    const newEvent = new Event(event);
 
     newEvent
       .save()
@@ -117,6 +133,10 @@ router.get("/:id", (req, res) => {
       res.status(400).json(err);
     });
 });
+
+// @route   PUT /event/:id
+// @desc    Update event by id
+// @access  private
 
 router.put(
   "/:id",

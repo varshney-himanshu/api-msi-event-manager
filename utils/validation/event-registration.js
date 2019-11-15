@@ -10,6 +10,8 @@ module.exports = function validateEventRegisterInput(data) {
   data.description = !isEmpty(data.description) ? data.description : "";
   data.deadline = !isEmpty(data.deadline) ? data.deadline : "";
   data.venue = !isEmpty(data.venue) ? data.venue : "";
+  data.type = !isEmpty(data.type) ? data.type : "";
+  data.date = !isEmpty(data.date) ? data.date : "";
 
   if (Validator.isEmpty(data.creator)) {
     errors.creator = "user is required";
@@ -27,6 +29,13 @@ module.exports = function validateEventRegisterInput(data) {
     errors.deadline = "deadline is required";
   }
 
+  if (Validator.isEmpty(data.date)) {
+    errors.date = "date is required";
+  }
+
+  if (Validator.isEmpty(data.type)) {
+    errors.type = "type is required";
+  }
   return {
     errors,
     isValid: isEmpty(errors)
