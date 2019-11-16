@@ -180,7 +180,7 @@ router.put(
   }
 );
 
-outer.put(
+router.put(
   "/add-registered-event/email",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
