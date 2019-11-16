@@ -3,6 +3,7 @@ const Event = require("../models/Event");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const { Parser } = require("json2csv");
 const {
   cloud_api_key,
   cloud_name,
@@ -247,6 +248,39 @@ router.post(
       .catch(err => {
         res.status(400);
       });
+  }
+);
+
+router.post(
+  "/download-teams-registered",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { registerData, members } = req.body;
+    const fields = ["teamName"];
+
+    for (let i = 1; i <= Number(members); i++) {
+      fields.push(`Member_${i}_Name`);
+      fields.push(`Member_${i}_Email`);
+      fields.push(`Member_${i}_E_ID`);
+      fields.push(`Member_${i}_Phone`);
+      fields.push(`Member_${i}_Institute`);
+      fields.push(`Member_${i}_Course`);
+    }
+
+    // console.log(fields);
+
+    const opts = {
+      fields,
+      excelStrings: false
+    };
+
+    const parser = new Parser(opts);
+    const csv = parser.parse(registerData);
+    console.log(csv);
+
+    res.attachment("registered.csv");
+
+    res.status(200).send(csv);
   }
 );
 
