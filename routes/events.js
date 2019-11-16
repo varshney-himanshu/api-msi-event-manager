@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const Event = require("../models/Event");
+const Profile = require("../models/Profile");
+
 const passport = require("passport");
 const mongoose = require("mongoose");
 const multer = require("multer");
@@ -197,8 +199,16 @@ router.post(
       { new: true }
     )
       .then(event => {
-        console.log(event);
         if (event) {
+          if (event.type === "MULTIPLE") {
+            event.usersRegistered.map((team, index) => {
+              Profile.findOneAndUpdate(
+                { email: team[`Member_${index + 1}_Email`] },
+                { $push: { registered: id } },
+                { new: true }
+              );
+            });
+          }
           res.status(200).json(event);
         }
       })
