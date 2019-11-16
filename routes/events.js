@@ -255,19 +255,29 @@ router.post(
   "/download-teams-registered",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { registerData, members } = req.body;
-    const fields = ["teamName"];
+    const { registerData, members, type } = req.body;
+    let fields = [];
 
-    for (let i = 1; i <= Number(members); i++) {
-      fields.push(`Member_${i}_Name`);
-      fields.push(`Member_${i}_Email`);
-      fields.push(`Member_${i}_E_ID`);
-      fields.push(`Member_${i}_Phone`);
-      fields.push(`Member_${i}_Institute`);
-      fields.push(`Member_${i}_Course`);
+    if (type === "MULTIPLE") {
+      fields.push("teamName");
+      for (let i = 1; i <= Number(members); i++) {
+        fields.push(`Member_${i}_Name`);
+        fields.push(`Member_${i}_Email`);
+        fields.push(`Member_${i}_E_ID`);
+        fields.push(`Member_${i}_Phone`);
+        fields.push(`Member_${i}_Institute`);
+        fields.push(`Member_${i}_Course`);
+      }
+    } else {
+      fields = [
+        "fullName",
+        "email",
+        "phone",
+        "enrollment_id",
+        "institute",
+        "course"
+      ];
     }
-
-    // console.log(fields);
 
     const opts = {
       fields,

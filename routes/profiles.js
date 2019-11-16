@@ -268,7 +268,6 @@ router.post(
     })
       .then(profiles => {
         if (profiles) {
-          // console.log(profiles);
           const fields = [
             "fullName",
             "email",
