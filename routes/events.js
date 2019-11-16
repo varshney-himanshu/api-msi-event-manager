@@ -192,7 +192,7 @@ router.post(
   (req, res) => {
     const { id } = req.params;
     const { user } = req.body;
-    console.log(id, user);
+    // console.log(id, user);
     Event.findOneAndUpdate(
       { _id: id },
       { $push: { usersRegistered: user } },
@@ -201,14 +201,14 @@ router.post(
       .then(event => {
         if (event) {
           if (event.type === "MULTIPLE") {
-            event.usersRegistered.map((team, index) => {
-              Profile.findOneAndUpdate(
+            event.usersRegistered.map(async (team, index) => {
+              await Profile.findOneAndUpdate(
                 { email: team[`Member_${index + 1}_Email`] },
                 { $push: { registered: id } },
                 { new: true }
               ).then(Profile => {
                 if (Profile) {
-                  console.log(team[`Member_${index + 1}_Email`]);
+                  console.log(Profile);
                 }
               });
             });
