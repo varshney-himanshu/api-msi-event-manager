@@ -159,13 +159,35 @@ router.put(
 // @access  private
 
 router.put(
-  "/add-registered-event",
+  "/add-registered-event/id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const { eventId } = req.body;
     const { id } = req.user;
     Profile.findOneAndUpdate(
       { user: id },
+      { $push: { registered: eventId } },
+      { new: true }
+    )
+      .then(profile => {
+        if (profile) {
+          res.status(200).json(profile);
+        }
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  }
+);
+
+outer.put(
+  "/add-registered-event/email",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { eventId, email } = req.body;
+    // const { email } = req.user;
+    Profile.findOneAndUpdate(
+      { email },
       { $push: { registered: eventId } },
       { new: true }
     )
