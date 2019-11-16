@@ -211,7 +211,7 @@ router.delete(
   (req, res) => {
     const { id } = req.params;
     const user = req.user.id;
-    Event.findOneAndDelete({ _id: id, creator: user })
+    Event.findOneAndDelete({ _id: id })
       .then(event => {
         if (event) {
           cloudinary.v2.uploader.destroy(event.image.public_id);
