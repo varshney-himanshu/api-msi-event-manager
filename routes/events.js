@@ -206,7 +206,11 @@ router.post(
                 { email: team[`Member_${index + 1}_Email`] },
                 { $push: { registered: id } },
                 { new: true }
-              );
+              ).then(Profile => {
+                if (Profile) {
+                  console.log(team[`Member_${index + 1}_Email`]);
+                }
+              });
             });
           }
           res.status(200).json(event);
