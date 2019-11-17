@@ -108,11 +108,7 @@ router.get(
 
     Profile.findOne({ user: _id })
       .then(profile => {
-        if (profile) {
-          res.status(200).json(profile);
-        } else {
-          res.status(404).json({ error: "Profile Not Found!" });
-        }
+        res.status(200).json(profile);
       })
       .catch(err => res.status(400).json(err));
   }
