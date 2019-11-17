@@ -104,12 +104,14 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { id } = req.user;
+    const { _id } = req.user;
 
-    Profile.findOne({ user: id })
+    Profile.findOne({ user: _id })
       .then(profile => {
         if (profile) {
           res.status(200).json(profile);
+        } else {
+          status(404).json({ error: "Profile Not Found!" });
         }
       })
       .catch(err => res.status(400).json(err));
