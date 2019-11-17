@@ -145,11 +145,14 @@ router.put(
   "/:id",
   [passport.authenticate("jwt", { session: false }), upload.single("imgFile")],
   (req, res) => {
+    console.log("flag1");
     const { isValid, errors } = validateEventRegisterInput(req.body);
 
     if (!isValid) {
-      return res.status(200).json(errors);
+      return res.status(400).json(errors);
     }
+    console.log("flag1");
+    console.log(req.body);
 
     const { venue, description, title, deadline, date, image_prev } = req.body;
 
