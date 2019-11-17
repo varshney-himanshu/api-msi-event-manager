@@ -26,6 +26,8 @@ router.post(
       fullName,
       enrollment_id,
       course,
+      semester,
+      section,
       institute,
       phone
     } = req.body;
@@ -40,6 +42,8 @@ router.post(
           fullName,
           enrollment_id,
           course,
+          semester,
+          section,
           institute,
           phone
         });
@@ -79,12 +83,24 @@ router.post(
       enrollment_id,
       phone,
       course,
+      semester,
+      section,
       institute
     } = req.body;
 
     Profile.findOneAndUpdate(
       { user: req.user.id },
-      { user, email, fullName, enrollment_id, phone, course, institute },
+      {
+        user,
+        email,
+        fullName,
+        enrollment_id,
+        phone,
+        course,
+        semester,
+        section,
+        institute
+      },
       { new: true }
     )
       .then(profile => {
