@@ -172,7 +172,7 @@ router.put(
 
     const { id } = req.params;
 
-    Event.findOneAndUpdate({ _id: id, creator: req.user.id }, updatedata, {
+    Event.findOneAndUpdate({ _id: id }, updatedata, {
       new: true
     })
       .then(event => {
