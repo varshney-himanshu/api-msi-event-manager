@@ -111,7 +111,7 @@ router.get(
         if (profile) {
           res.status(200).json(profile);
         } else {
-          status(404).json({ error: "Profile Not Found!" });
+          res.status(404).json({ error: "Profile Not Found!" });
         }
       })
       .catch(err => res.status(400).json(err));
